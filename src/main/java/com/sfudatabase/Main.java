@@ -1,36 +1,33 @@
-package main.java;
+package main.java.com.sfudatabase;
 
-import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.stage.Screen;
-import javafx.stage.Stage;
+import javax.swing.*;
+import main.java.com.sfudatabase.controller.*;
+import main.java.com.sfudatabase.model.*;
 
-public class Main extends Application {
+import java.awt.*;
 
-    private static final double ASPECT_RATIO = 16.0 / 9.0;
+public class Main {
 
     public static void main(String[] args) {
-        launch(args);
-    }
+        SwingUtilities.invokeLater(() -> {
+            JFrame mainFrame = new JFrame("Yelp Database Application");
 
-    @Override
-    public void start(Stage primaryStage) throws Exception {
-        
-        Parent root = FXMLLoader.load(getClass().getResource("../resources/fxml/MainScene.fxml"));
+            Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 
-        Screen userScreen = Screen.getPrimary();
-        javafx.geometry.Rectangle2D screenBounds = userScreen.getVisualBounds();
+            double screenWidth = screenSize.width * 0.8;
+            int screenWidthInt = (int) screenWidth;
+            double screenHeight = screenWidth * 9 / 16;
+            int screenHeightInt = (int) screenHeight;
 
-        double viewportHeight = screenBounds.getHeight() * 0.8;
-        double viewportWidth = viewportHeight * ASPECT_RATIO;
+            ImagePanelController imagePanelController = new ImagePanelController();
+            ImagePanel imagePanel = new ImagePanel("src/main/resources/img/logo-background.png", imagePanelController);
 
-        Scene mainScene = new Scene(root, viewportWidth, viewportHeight);
-        mainScene.getStylesheets().add(getClass().getResource("../resources/css/mainScene.css").toExternalForm());
-
-        primaryStage.setTitle("Yelp Database Application");
-        primaryStage.setScene(mainScene);
-        primaryStage.show();
+            mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            mainFrame.setSize(screenWidthInt, screenHeightInt);
+            mainFrame.setLocationRelativeTo(null);
+            mainFrame.setContentPane(imagePanel);
+            mainFrame.setVisible(true);
+        });
     }
 }
+
