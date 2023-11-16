@@ -1,5 +1,6 @@
 package main.java.com.sfudatabase.model;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -8,6 +9,9 @@ import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.border.Border;
+import javax.swing.border.LineBorder;
+
 import main.java.com.sfudatabase.controller.*;
 
 public class ImagePanel extends JPanel {
@@ -46,6 +50,9 @@ public class ImagePanel extends JPanel {
 
     private void createMenuElements() {
         menuBar = new JMenuBar();
+        menuBar.setBackground(Color.black);
+        Border menuBorder = new LineBorder(Color.WHITE, 2);
+        menuBar.setBorder(menuBorder);
         this.setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridx = 0; // Need to fix the constraints to center the JMenuBar
@@ -54,6 +61,7 @@ public class ImagePanel extends JPanel {
         gbc.weighty = 1.0;
         gbc.anchor = GridBagConstraints.CENTER;
         menu = new JMenu("Options");
+        menu.setForeground(Color.white);
         loginItem = new JMenuItem("Login");
         businessSearchItem = new JMenuItem("Business Search");
         userSearchItem = new JMenuItem("User Search");
