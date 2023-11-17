@@ -72,19 +72,36 @@ public class Main {
             JFrame mainFrame = new JFrame("Yelp Database Application");
 
             Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-
             double screenWidth = screenSize.width * 0.8;
             int screenWidthInt = (int) screenWidth;
             double screenHeight = screenWidth * 9 / 16;
             int screenHeightInt = (int) screenHeight;
 
-            ImagePanelController imagePanelController = new ImagePanelController(con);
-            ImagePanel imagePanel = new ImagePanel("src/main/resources/img/logo-background.png", imagePanelController);
+			PanelController panelController = new PanelController();
+            ImagePanelController imagePanelController = new ImagePanelController(panelController);
+			FunctionController functionController = new FunctionController(con);
 
+			// Create UI Panels
+            ImagePanel imagePanel = new ImagePanel("src/main/resources/img/logo-background.png", imagePanelController);
+			LoginPanel loginPanel = new LoginPanel("src/main/resources/img/logo-background.png", functionController);
+			BusSearchPanel busSearchPanel = new BusSearchPanel("src/main/resources/img/logo-background.png", functionController);
+			UserSearchPanel userSearchPanel = new UserSearchPanel("src/main/resources/img/logo-background.png", functionController);
+			AddFriendPanel addFriendPanel = new AddFriendPanel("src/main/resources/img/logo-background.png", functionController);
+			AddReviewPanel addReviewPanel = new AddReviewPanel("src/main/resources/img/logo-background.png", functionController);
+
+			panelController.add(imagePanel, "imagePanel");
+			panelController.add(loginPanel, "loginPanel");
+			panelController.add(busSearchPanel, "busSearchPanel");
+			panelController.add(userSearchPanel, "userSearchPanel");
+			panelController.add(addFriendPanel, "addFriendPanel");
+			panelController.add(addReviewPanel, "addReviewPanel");
+			panelController.showPanel("imagePanel");
+
+			// Set behaviour of the main JFrame
             mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             mainFrame.setSize(screenWidthInt, screenHeightInt);
             mainFrame.setLocationRelativeTo(null);
-            mainFrame.setContentPane(imagePanel);
+            mainFrame.setContentPane(panelController);
             mainFrame.setVisible(true);
         });
     }

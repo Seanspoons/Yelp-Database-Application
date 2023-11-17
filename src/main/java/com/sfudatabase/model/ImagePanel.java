@@ -64,9 +64,13 @@ public class ImagePanel extends JPanel {
         menu.setForeground(Color.white);
         loginItem = new JMenuItem("Login");
         businessSearchItem = new JMenuItem("Business Search");
+        businessSearchItem.setEnabled(false);
         userSearchItem = new JMenuItem("User Search");
+        userSearchItem.setEnabled(false);
         addFriendItem = new JMenuItem("Add Friend");
+        addFriendItem.setEnabled(false);
         addReviewItem = new JMenuItem("Add Review Search");
+        addReviewItem.setEnabled(false);
 
         this.add(menuBar);
         menuBar.add(menu);
