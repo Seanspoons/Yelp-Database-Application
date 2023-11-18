@@ -32,14 +32,14 @@ public class LoginPanel extends FunctionPanel {
         gbc.gridy = 0;
         gbc.anchor = GridBagConstraints.WEST;
         gbc.insets = new Insets(10, 10, 0, 10);
-        loginPanel.add(loginLabel, gbc);
+        functionPanel.add(loginLabel, gbc);
         
         // Text field
         JTextField loginTextField = new JTextField(15);
         gbc.gridx = 1;
         gbc.gridy = 0;
         gbc.anchor = GridBagConstraints.WEST;
-        loginPanel.add(loginTextField, gbc);
+        functionPanel.add(loginTextField, gbc);
 
         // Button
         JButton loginButton = new JButton("Login");
@@ -53,7 +53,7 @@ public class LoginPanel extends FunctionPanel {
         gbc.gridwidth = 2;
         gbc.insets = new Insets(10, 10, 10, 10);
         gbc.anchor = GridBagConstraints.CENTER;
-        loginPanel.add(loginButton, gbc);
+        functionPanel.add(loginButton, gbc);
     }
 
     private void importBackground(String imgPath) {
