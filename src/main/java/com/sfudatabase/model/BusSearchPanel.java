@@ -10,7 +10,7 @@ import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 import main.java.com.sfudatabase.controller.FunctionController;
 
-public class BusSearchPanel extends JPanel {
+public class BusSearchPanel extends FunctionPanel {
 
     FunctionController functionController;
     BufferedImage img;
@@ -18,14 +18,6 @@ public class BusSearchPanel extends JPanel {
     public BusSearchPanel(String imgPath, FunctionController functionController) {
         this.functionController = functionController;
         importBackground(imgPath);
-
-        this.setLayout(new GridBagLayout());
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.gridx = 0; // Need to fix the constraints to center the JMenuBar
-        gbc.gridy = 0;
-        gbc.weightx = 1.0;
-        gbc.weighty = 1.0;
-        gbc.anchor = GridBagConstraints.CENTER;
     }
 
     private void importBackground(String imgPath) {

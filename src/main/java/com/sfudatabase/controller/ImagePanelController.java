@@ -9,7 +9,6 @@ public class ImagePanelController { // Just controls the UI
     }
 
     public void handleLoginClick() {
-        System.out.println("Login clicked");
 
         if(FunctionController.loggedIn) { // First check if logged in
             // If logged in - tell user they are already logged in
@@ -20,42 +19,18 @@ public class ImagePanelController { // Just controls the UI
     }
 
     public void handleBusinessSearchClick() {
-        System.out.println("Business Search clicked");
-
-        if(FunctionController.loggedIn) { // First check if logged in
-            // If logged in - open business search ui
-        } else {
-            // Else not logged in - tell user they need to be logged in to do this
-        }
+        panelController.showPanel("busSearchPanel");    
     }
 
     public void handleUserSearchClick() {
-        System.out.println("User Search clicked");
-
-        if(FunctionController.loggedIn) { // First check if logged in
-            // If logged in - open user search ui
-        } else {
-            // Else not logged in - tell user they need to be logged in to do this
-        }
+        panelController.showPanel("userSearchPanel"); 
     }
 
     public void handleAddFriendClick() {
-        System.out.println("Add Friend clicked");
-
-        if(FunctionController.loggedIn) { // First check if logged in
-            // If logged in - open add friend ui
-        } else {
-            // Else not logged in - tell user they need to be logged in to do this
-        }
+        panelController.showPanel("addFriendPanel"); 
     }
 
     public void handleAddReviewClick() {
-        System.out.println("Add Review clicked");
-
-        if(FunctionController.loggedIn) { // First check if logged in
-            // If logged in - open add friend ui
-        } else {
-            // Else not logged in - tell user they need to be logged in to do this
-        }
+        panelController.showPanel("addReviewPanel"); 
     }
 }

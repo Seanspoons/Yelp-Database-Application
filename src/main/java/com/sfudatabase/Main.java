@@ -79,7 +79,7 @@ public class Main {
 
 			PanelController panelController = new PanelController();
             ImagePanelController imagePanelController = new ImagePanelController(panelController);
-			FunctionController functionController = new FunctionController(con);
+			FunctionController functionController = new FunctionController(panelController, con);
 
 			// Create UI Panels
             ImagePanel imagePanel = new ImagePanel("src/main/resources/img/logo-background.png", imagePanelController);

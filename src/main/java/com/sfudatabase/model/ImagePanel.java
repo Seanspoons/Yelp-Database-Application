@@ -26,11 +26,11 @@ public class ImagePanel extends JPanel {
     private BufferedImage img;
     private JMenuBar menuBar;
     private JMenu menu;
-    private JMenuItem loginItem;
-    private JMenuItem businessSearchItem;
-    private JMenuItem userSearchItem;
-    private JMenuItem addFriendItem;
-    private JMenuItem addReviewItem;
+    public static JMenuItem loginItem;
+    public static JMenuItem businessSearchItem;
+    public static JMenuItem userSearchItem;
+    public static JMenuItem addFriendItem;
+    public static JMenuItem addReviewItem;
 
 
     public ImagePanel(String imgPath, ImagePanelController controller) {
