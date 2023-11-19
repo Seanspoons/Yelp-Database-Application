@@ -15,14 +15,18 @@ import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
 
 import main.java.com.sfudatabase.controller.FunctionController;
+import main.java.com.sfudatabase.controller.PanelController;
 
 public class LoginPanel extends FunctionPanel {
 
     FunctionController functionController;
+    PanelController panelController;
     BufferedImage img;
 
-    public LoginPanel(String imgPath, FunctionController functionController) {
+    public LoginPanel(String imgPath, FunctionController functionController, PanelController panelController) {
+        super(panelController);
         this.functionController = functionController;
+        this.panelController = panelController;
         importBackground(imgPath);
 
         // Label

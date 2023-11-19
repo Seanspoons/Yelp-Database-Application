@@ -78,16 +78,16 @@ public class Main {
             int screenHeightInt = (int) screenHeight;
 
 			PanelController panelController = new PanelController();
-            ImagePanelController imagePanelController = new ImagePanelController(panelController);
 			FunctionController functionController = new FunctionController(panelController, con);
+			AddReviewPanel addReviewPanel = new AddReviewPanel("src/main/resources/img/logo-background.png", functionController, panelController);
+            ImagePanelController imagePanelController = new ImagePanelController(panelController, addReviewPanel.getUserIDTextField());
 
 			// Create UI Panels
             ImagePanel imagePanel = new ImagePanel("src/main/resources/img/logo-background.png", imagePanelController);
-			LoginPanel loginPanel = new LoginPanel("src/main/resources/img/logo-background.png", functionController);
-			BusSearchPanel busSearchPanel = new BusSearchPanel("src/main/resources/img/logo-background.png", functionController);
-			UserSearchPanel userSearchPanel = new UserSearchPanel("src/main/resources/img/logo-background.png", functionController);
-			AddFriendPanel addFriendPanel = new AddFriendPanel("src/main/resources/img/logo-background.png", functionController);
-			AddReviewPanel addReviewPanel = new AddReviewPanel("src/main/resources/img/logo-background.png", functionController);
+			LoginPanel loginPanel = new LoginPanel("src/main/resources/img/logo-background.png", functionController, panelController);
+			BusSearchPanel busSearchPanel = new BusSearchPanel("src/main/resources/img/logo-background.png", functionController, panelController);
+			UserSearchPanel userSearchPanel = new UserSearchPanel("src/main/resources/img/logo-background.png", functionController, panelController);
+			AddFriendPanel addFriendPanel = new AddFriendPanel("src/main/resources/img/logo-background.png", functionController, panelController);
 
 			panelController.add(imagePanel, "imagePanel");
 			panelController.add(loginPanel, "loginPanel");

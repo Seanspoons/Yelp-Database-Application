@@ -67,9 +67,9 @@ public class ImagePanel extends JPanel {
         businessSearchItem.setEnabled(false);
         userSearchItem = new JMenuItem("User Search");
         userSearchItem.setEnabled(false);
-        addFriendItem = new JMenuItem("Add Friend");
+        addFriendItem = new JMenuItem("Add a Friend");
         addFriendItem.setEnabled(false);
-        addReviewItem = new JMenuItem("Add Review Search");
+        addReviewItem = new JMenuItem("Review a Business");
         addReviewItem.setEnabled(false);
 
         this.add(menuBar);

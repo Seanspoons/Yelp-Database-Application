@@ -1,11 +1,15 @@
 package main.java.com.sfudatabase.controller;
 
+import javax.swing.JTextField;
+
 public class ImagePanelController { // Just controls the UI
 
     PanelController panelController;
+    JTextField userIDTextField;
 
-    public ImagePanelController(PanelController panelController) {
+    public ImagePanelController(PanelController panelController, JTextField userIDTextField) {
         this.panelController = panelController;
+        this.userIDTextField = userIDTextField;
     }
 
     public void handleLoginClick() {
@@ -31,6 +35,8 @@ public class ImagePanelController { // Just controls the UI
     }
 
     public void handleAddReviewClick() {
+        userIDTextField.setText(FunctionController.userID);
+        userIDTextField.setEnabled(false);
         panelController.showPanel("addReviewPanel"); 
     }
 }
