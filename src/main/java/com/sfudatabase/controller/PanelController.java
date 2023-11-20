@@ -27,29 +27,23 @@ public class PanelController extends JPanel {
     }
 
     public void showPanelReview(String panelName, Boolean wasSearching){
-        addReviewPanel.setWasSearching(wasSearching);
         if(!wasSearching) {
-            addReviewPanel.setWasSearching(wasSearching);
             cardLayout.show(this, panelName);
             currentPanel = panelName;
         } else {
             addReviewPanel.setUserIDTextField(userID);
             addReviewPanel.setBusIDTextField(businessID);
-            addReviewPanel.setWasSearching(true);
             cardLayout.show(this, panelName);
             currentPanel = panelName;
         }
     }
 
     public void showPanelFriend(String panelName, Boolean wasSearching){
-        addFriendPanel.setWasSearching(wasSearching);
         if(!wasSearching) {
-            addFriendPanel.setWasSearching(wasSearching);
             cardLayout.show(this, panelName);
             currentPanel = panelName;
         } else {
             addFriendPanel.setAddFriendTextField(friendID);
-            addFriendPanel.setWasSearching(true);
             cardLayout.show(this, panelName);
             currentPanel = panelName;
         }

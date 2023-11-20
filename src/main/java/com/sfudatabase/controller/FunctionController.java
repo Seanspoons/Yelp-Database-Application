@@ -79,6 +79,8 @@ public class FunctionController {
     }
 
     public void handleBusSearch(ArrayList<JTextField> inputsArray, AtomicReference<String> orderByOption) {
+        busResultIndex = 0;
+        busResultList.clear();
         String busName = "";
         String busCity = "";
         String minStars = "";
@@ -217,6 +219,8 @@ public class FunctionController {
     }
 
     public void handleUserSearch(ArrayList<JTextField> inputsArray) {
+        userResultIndex = 0;
+        userResultList.clear();
         String userName = "";
         String revCount = "";
         String avgStars = "";
@@ -305,7 +309,8 @@ public class FunctionController {
                         preparedStatement.setString(1, FunctionController.userID);
                         preparedStatement.setString(2, desiredFriendIDTextField.getText());
 
-                        //int rowsAffected = preparedStatement.executeUpdate();
+                        int rowsAffected = preparedStatement.executeUpdate();
+                        System.out.println(rowsAffected);
 
                         String successMessage = "Success! You just added a new friend!";
                         JOptionPane.showMessageDialog(null, successMessage, "Success", JOptionPane.INFORMATION_MESSAGE);
@@ -327,7 +332,7 @@ public class FunctionController {
 		}
     }
 
-    public void handleAddReview(ArrayList<JTextField> inputsArray, Boolean wasSearching) {
+    public void handleAddReview(ArrayList<JTextField> inputsArray) {
 
         String rSQL = "SELECT * FROM business WHERE business_id = ?";
 
@@ -348,18 +353,14 @@ public class FunctionController {
                         Timestamp currentTimestamp = Timestamp.from(currentInstant);
                         preparedStatement.setTimestamp(5, currentTimestamp);
 
-                        //int rowsAffected = preparedStatement.executeUpdate();
-                        //System.out.println(rowsAffected);
+                        int rowsAffected = preparedStatement.executeUpdate();
+                        System.out.println(rowsAffected);
 
                         String successMessage = "Success! You just added a new review";
                         JOptionPane.showMessageDialog(null, successMessage, "Success", JOptionPane.INFORMATION_MESSAGE);
                         inputsArray.get(1).setText("");
                         inputsArray.get(2).setText("");
-                        if(wasSearching) {
-                            panelController.showPanel("busSearchResultsPanel");
-                        } else {
-                            panelController.showPanel("imagePanel");
-                        }
+                        panelController.showPanel("imagePanel");
                     } catch(SQLException se) {
                         se.printStackTrace();
                     }

@@ -29,13 +29,11 @@ public class AddReviewPanel extends FunctionPanel {
     private JTextField userIDTextField;
     private JTextField busIDTextField;
     private JTextField starsTextField;
-    private Boolean wasSearching;
 
     public AddReviewPanel(String imgPath, FunctionController functionController, PanelController panelController) {
         super(panelController, functionController);
         this.functionController = functionController;
         this.panelController = panelController;
-        wasSearching = false;
         importBackground(imgPath);
 
         GridBagConstraints gbc = new GridBagConstraints();
@@ -63,7 +61,7 @@ public class AddReviewPanel extends FunctionPanel {
 
         // Button
         JButton addReviewButton = new JButton("Add Review");
-        addReviewButton.addActionListener(e -> checkEntryValidity(inputsArray, wasSearching)); // Send this to a validator that checks if stars is a double then send to handleAddReview
+        addReviewButton.addActionListener(e -> checkEntryValidity(inputsArray)); // Send this to a validator that checks if stars is a double then send to handleAddReview
         addReviewButton.setBackground(Color.BLACK);
         addReviewButton.setForeground(Color.WHITE);
         addReviewButton.setPreferredSize(new Dimension(75, 25));
@@ -100,7 +98,7 @@ public class AddReviewPanel extends FunctionPanel {
         panel.add(textField, gbc);
     }
 
-    private void checkEntryValidity(ArrayList<JTextField> inputsArray, Boolean wasSearching) {
+    private void checkEntryValidity(ArrayList<JTextField> inputsArray) {
         if(inputsArray.get(0).getText().isEmpty() || inputsArray.get(1).getText().isEmpty() || inputsArray.get(2).getText().isEmpty()) {
             String errorMessage = "Error: Cannot leave any fields empty. Finish filling in the review before submitting.";
             JOptionPane.showMessageDialog(null, errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
@@ -110,7 +108,7 @@ public class AddReviewPanel extends FunctionPanel {
                     String errorMessage = "Error: Invalid star entry. Please enter a decimal between 1 - 5 (eg. 2.5).";
                     JOptionPane.showMessageDialog(null, errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
                 } else {
-                    functionController.handleAddReview(inputsArray, wasSearching);
+                    functionController.handleAddReview(inputsArray);
                 }
             } else {
                 String errorMessage = "Error: Invalid star entry. Please enter a decimal between 1 - 5 (eg. 2.5).";
@@ -121,10 +119,6 @@ public class AddReviewPanel extends FunctionPanel {
 
     public JTextField getUserIDTextField() {
         return userIDTextField;
-    }
-
-    public void setWasSearching(Boolean bool) {
-        wasSearching = true;
     }
 
     public void setUserIDTextField(String userID) {

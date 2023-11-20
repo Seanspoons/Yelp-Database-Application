@@ -25,13 +25,11 @@ public class AddFriendPanel extends FunctionPanel {
     private PanelController panelController;
     private BufferedImage img;
     private JTextField addFriendTextField;
-    Boolean wasSearching;
 
     public AddFriendPanel(String imgPath, FunctionController functionController, PanelController panelController) {
         super(panelController, functionController);
         this.functionController = functionController;
         this.panelController = panelController;
-        wasSearching = false;
         importBackground(imgPath);
 
         // Label
@@ -86,11 +84,7 @@ public class AddFriendPanel extends FunctionPanel {
 
         panelController.showPanel("imagePanel");
     }
-
-    public void setWasSearching(Boolean bool) {
-        wasSearching = bool;
-    }
-
+    
     private void importBackground(String imgPath) {
         try{
             this.img = ImageIO.read(new File(imgPath));
