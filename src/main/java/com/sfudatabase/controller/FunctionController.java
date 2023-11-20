@@ -1,29 +1,50 @@
 package main.java.com.sfudatabase.controller;
 
+import java.security.SecureRandom;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicReference;
+
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
+import main.java.com.sfudatabase.database.BusinessData;
+import main.java.com.sfudatabase.database.UserData;
+import main.java.com.sfudatabase.model.BusSearchResultsPanel;
 import main.java.com.sfudatabase.model.ImagePanel;
+import main.java.com.sfudatabase.model.UserSearchResultsPanel;
 
 public class FunctionController {
     
-    Connection con;
+    private Connection con;
     public static Boolean loggedIn = false;
     public static String userID;
-    PanelController panelController;
+    private PanelController panelController;
+    private BusSearchResultsPanel busSearchResultsPanel;
+    private UserSearchResultsPanel userSearchResultsPanel;
+    public ArrayList<BusinessData> busResultList;
+    public int busResultIndex;
+    public ArrayList<UserData> userResultList;
+    public int userResultIndex;
 
     public FunctionController(PanelController panelController, Connection con) {
         this.con = con;
         this.panelController = panelController;
+        busResultList = new ArrayList<>();
+        userResultList = new ArrayList<>();
+        busResultIndex = 0;
+        userResultIndex = 0;
+
+        busSearchResultsPanel = new BusSearchResultsPanel("src/main/resources/img/logo-background.png", this, panelController);
+        userSearchResultsPanel = new UserSearchResultsPanel("src/main/resources/img/logo-background.png", this, panelController);
+        panelController.add(busSearchResultsPanel, "busSearchResultsPanel");
+        panelController.add(userSearchResultsPanel, "userSearchResultsPanel");
     }
 
     public void handleLoginSubmit(String inputID) {
@@ -96,7 +117,9 @@ public class FunctionController {
             sSQL.append(" ORDER BY " + orderByOptionString);
         }
 
-        try(PreparedStatement preparedStatement = con.prepareStatement(sSQL.toString())) {
+        //System.out.println(sSQL);
+
+        try(PreparedStatement preparedStatement = con.prepareStatement(sSQL.toString(), ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY)) {
             for (int i = 0; i < parameters.size(); i++) {
                 Object param = parameters.get(i);
                 if (param instanceof String) {
@@ -106,25 +129,91 @@ public class FunctionController {
                 }
             }
 
-            try(ResultSet resultSet = preparedStatement.executeQuery()) {
-                if(!resultSet.next()) {
+            try(ResultSet resultSet = preparedStatement.executeQuery();) {
+                Boolean hasResults = resultSet.next();
+                if(!hasResults) {
                     String errorMessage = "Not Found: Sorry! Your search did not return any results. Change the search parameters and try again.";
                     JOptionPane.showMessageDialog(null, errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
-                } else { // Switch to the search results screen
-                    while(resultSet.next()) { // Need to get this into UI
-                        String busID = resultSet.getString("business_id");
+                } else {
+                    panelController.showPanel("busSearchResultsPanel");
+                    busSearchResultsPanel.setResultList(busResultList);
+                    do {
+                        String businessID = resultSet.getString("business_id");
                         String name = resultSet.getString("name");
                         String address = resultSet.getString("address");
                         String city = resultSet.getString("city");
                         double stars = resultSet.getDouble("stars");
+                        String starsString = String.valueOf(stars);
 
-                        System.out.println("ID: " + busID + ", Name: " + name + ", Address: " + address + ", City: " + city + ", Stars: " + stars);
-                    }
+                        BusinessData businessData = new BusinessData(businessID, name, address, city, starsString);
+                        busResultList.add(businessData);
+
+                    } while(resultSet.next());
+                    displayCurrentBusRow(busResultList);
                 }
             }
         } catch(SQLException se) {
 			se.printStackTrace();
 		}
+    }
+
+    private void displayCurrentBusRow(ArrayList<BusinessData> busResultList) {
+        busSearchResultsPanel.setBusID(busResultList.get(busResultIndex).getBusinessID());
+        busSearchResultsPanel.setBusName(busResultList.get(busResultIndex).getName());
+        busSearchResultsPanel.setAddress(busResultList.get(busResultIndex).getAddress());
+        busSearchResultsPanel.setCity(busResultList.get(busResultIndex).getCity());
+        busSearchResultsPanel.setStars(busResultList.get(busResultIndex).getStars());
+    }
+
+    private void displayCurrentUserRow(ArrayList<UserData> userResultList) {
+        userSearchResultsPanel.setUserID(userResultList.get(userResultIndex).getUserID());
+        userSearchResultsPanel.setName(userResultList.get(userResultIndex).getName());
+        userSearchResultsPanel.setReviewCount(userResultList.get(userResultIndex).getReviewCount());
+        userSearchResultsPanel.setUseful(userResultList.get(userResultIndex).getUseful());
+        userSearchResultsPanel.setFunny(userResultList.get(userResultIndex).getFunny());
+        userSearchResultsPanel.setCool(userResultList.get(userResultIndex).getCool());
+        userSearchResultsPanel.setAverageStars(userResultList.get(userResultIndex).getAverageStars());
+        userSearchResultsPanel.setSignupDate(userResultList.get(userResultIndex).getSignupDate());
+    }
+
+    public void moveToNextBusRow(ArrayList<BusinessData> busResultList) {
+        if(busResultIndex != busResultList.size()-1) {
+            busResultIndex++;
+            displayCurrentBusRow(busResultList);
+        } else {
+            String infoMessage = "You have reached the end of the search results. Continue looking by scrolling backwards or search again.";
+            JOptionPane.showMessageDialog(null, infoMessage, "Info", JOptionPane.INFORMATION_MESSAGE);
+        }
+    }
+
+    public void moveToNextUserRow(ArrayList<UserData> userResultList) {
+        if(userResultIndex != userResultList.size()-1) {
+            userResultIndex++;
+            displayCurrentUserRow(userResultList);
+        } else {
+            String infoMessage = "You have reached the end of the search results. Continue looking by scrolling backwards or search again.";
+            JOptionPane.showMessageDialog(null, infoMessage, "Info", JOptionPane.INFORMATION_MESSAGE);
+        }
+    }
+
+    public void moveToPreviousBusRow(ArrayList<BusinessData> busResultList) {
+        if(busResultIndex != 0) {
+            busResultIndex--;
+            displayCurrentBusRow(busResultList);
+        } else {
+            String infoMessage = "You have reached the beginning of the search results. Continue looking by scrolling forwards or search again.";
+            JOptionPane.showMessageDialog(null, infoMessage, "Info", JOptionPane.INFORMATION_MESSAGE);
+        }
+    }
+
+    public void moveToPreviousUserRow(ArrayList<UserData> userResultList) {
+        if(userResultIndex != 0) {
+            userResultIndex--;
+            displayCurrentUserRow(userResultList);
+        } else {
+            String infoMessage = "You have reached the beginning of the search results. Continue looking by scrolling forwards or search again.";
+            JOptionPane.showMessageDialog(null, infoMessage, "Info", JOptionPane.INFORMATION_MESSAGE);
+        }
     }
 
     public void handleUserSearch(ArrayList<JTextField> inputsArray) {
@@ -166,11 +255,14 @@ public class FunctionController {
             }
 
             try(ResultSet resultSet = preparedStatement.executeQuery()) {
-                if(!resultSet.next()) {
+                Boolean hasResults = resultSet.next();
+                if(!hasResults) {
                     String errorMessage = "Not Found: Sorry! Your search did not return any results. Change the search parameters and try again.";
                     JOptionPane.showMessageDialog(null, errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
-                } else { // Switch to the search results screen
-                    while(resultSet.next()) { // Need to get this into UI
+                } else {
+                    panelController.showPanel("userSearchResultsPanel");
+                    userSearchResultsPanel.setResultList(userResultList);
+                    do {
                         String userID = resultSet.getString("user_id");
                         String name = resultSet.getString("name");
                         int reviewCount = resultSet.getInt("review_count");
@@ -180,10 +272,18 @@ public class FunctionController {
                         double averageStars = resultSet.getDouble("average_stars");
                         Timestamp userDate = resultSet.getTimestamp("yelping_since");
                         SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+                        String reviewCountString = String.valueOf(reviewCount);
+                        String usefulString = String.valueOf(useful);
+                        String funnyString = String.valueOf(funny);
+                        String coolString = String.valueOf(cool);
+                        String averageStarString = String.valueOf(averageStars);
                         String userSignupDate = dateFormatter.format(userDate);
 
-                        System.out.println("ID: " + userID + ", Name: " + name + ", Review Count: " + reviewCount + ", Useful: " + useful + ", Funny: " + funny + ", Cool: " + cool + ", Average Stars: " + averageStars + ", Signup Date: " + userSignupDate);
-                    }
+                        UserData userData = new UserData(userID, name, reviewCountString, usefulString, funnyString, coolString, averageStarString, userSignupDate);
+                        userResultList.add(userData);
+                    } while(resultSet.next());
+                    displayCurrentUserRow(userResultList);
                 }
             }
         } catch(SQLException se) {
@@ -227,34 +327,44 @@ public class FunctionController {
 		}
     }
 
-    public void handleAddReview(ArrayList<JTextField> inputsArray) {
+    public void handleAddReview(ArrayList<JTextField> inputsArray, Boolean wasSearching) {
 
         String rSQL = "SELECT * FROM business WHERE business_id = ?";
 
         try(PreparedStatement rPreparedStatement = con.prepareStatement(rSQL)) {
-            //fPreparedStatement.setString(1, desiredFriendIDTextField.getText()); // use business ID instead
+            rPreparedStatement.setString(1, inputsArray.get(1).getText());
             try(ResultSet resultSet = rPreparedStatement.executeQuery()) {
                 if(resultSet.next()) {
-                    String sSQL = "INSERT INTO review (user_id, business_id, stars, date) VALUES (?, ?, ?, ?)";
+                    // NEED TO ADD A REVIEW ID TO MAKE THIS WORK! What do I do for that ...?
+                    String sSQL = "INSERT INTO review (review_id, user_id, business_id, stars, date) VALUES (?, ?, ?, ?, ?)";
 
                     try(PreparedStatement preparedStatement = con.prepareStatement(sSQL)) {
-                        // Parameter assignment
-                        /*
-                        preparedStatement.setString(1, FunctionController.userID);
-                        preparedStatement.setString(2, desiredFriendIDTextField.getText());
-                        */
+                        String review_id = generateReviewID();
+                        preparedStatement.setString(1, review_id);
+                        preparedStatement.setString(2, inputsArray.get(0).getText());
+                        preparedStatement.setString(3, inputsArray.get(1).getText());
+                        preparedStatement.setDouble(4, Double.parseDouble(inputsArray.get(2).getText()));
+                        Instant currentInstant = Instant.now();
+                        Timestamp currentTimestamp = Timestamp.from(currentInstant);
+                        preparedStatement.setTimestamp(5, currentTimestamp);
 
                         //int rowsAffected = preparedStatement.executeUpdate();
+                        //System.out.println(rowsAffected);
 
-                        String successMessage = "Success! You just added a new friend!";
+                        String successMessage = "Success! You just added a new review";
                         JOptionPane.showMessageDialog(null, successMessage, "Success", JOptionPane.INFORMATION_MESSAGE);
-                        desiredFriendIDTextField.setText("");
-                        panelController.showPanel("imagePanel");
+                        inputsArray.get(1).setText("");
+                        inputsArray.get(2).setText("");
+                        if(wasSearching) {
+                            panelController.showPanel("busSearchResultsPanel");
+                        } else {
+                            panelController.showPanel("imagePanel");
+                        }
                     } catch(SQLException se) {
                         se.printStackTrace();
                     }
                 } else {
-                    String errorMessage = "Error: The friend you tried to add does not exist. Input another user ID to try again. (reminder: userID length is 22)";
+                    String errorMessage = "Error: The business you tried to review does not exist. (reminder: business ID length is 22)";
                     JOptionPane.showMessageDialog(null, errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
                 }
             } catch(SQLException se2) {
@@ -264,6 +374,21 @@ public class FunctionController {
         } catch(SQLException se) {
 			se.printStackTrace();
 		}
+    }
+
+    public String generateReviewID() {
+        String availableCharacters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_";
+
+        StringBuilder reviewID = new StringBuilder(22);
+        SecureRandom random = new SecureRandom();
+
+        for(int i = 0; i < 22; i++) {
+            int randomIndex = random.nextInt(availableCharacters.length());
+            char randomChar = availableCharacters.charAt(randomIndex);
+            reviewID.append(randomChar);
+        }
+
+        return reviewID.toString();
     }
 
 }

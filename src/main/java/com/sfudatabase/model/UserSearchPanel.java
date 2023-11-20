@@ -4,12 +4,13 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.GridBagConstraints;
+import java.awt.Insets;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+
 import javax.imageio.ImageIO;
-import java.awt.Insets;
 import javax.swing.Box;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -25,12 +26,12 @@ import main.java.com.sfudatabase.controller.PanelController;
 
 public class UserSearchPanel extends FunctionPanel {
 
-    FunctionController functionController;
+    private FunctionController functionController;
     PanelController panelController;
-    BufferedImage img;
+    private BufferedImage img;
     
     public UserSearchPanel(String imgPath, FunctionController functionController, PanelController panelController) {
-        super(panelController);
+        super(panelController, functionController);
         this.functionController = functionController;
         this.panelController = panelController;
         importBackground(imgPath);

@@ -7,21 +7,19 @@ import java.awt.GridBagLayout;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+
 import javax.imageio.ImageIO;
-import javax.swing.*;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JPanel;
 import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
 
-import main.java.com.sfudatabase.controller.*;
+import main.java.com.sfudatabase.controller.ImagePanelController;
 
 public class ImagePanel extends JPanel {
     
-    // Need to add buttons to finish class
-    /*
-     * example
-     * JButton loginButton = new JButton("Login");
-     * button.addActionListener(e -> controller.handleLoginClick());)
-     */
     private ImagePanelController controller;
     private BufferedImage img;
     private JMenuBar menuBar;
@@ -31,7 +29,6 @@ public class ImagePanel extends JPanel {
     public static JMenuItem userSearchItem;
     public static JMenuItem addFriendItem;
     public static JMenuItem addReviewItem;
-
 
     public ImagePanel(String imgPath, ImagePanelController controller) {
         this.controller = controller;

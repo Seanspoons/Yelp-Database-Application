@@ -1,72 +1,45 @@
 package main.java.com.sfudatabase;
 
-import javax.swing.*;
-import main.java.com.sfudatabase.controller.*;
-import main.java.com.sfudatabase.model.*;
-
-import java.awt.*;
+import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
+
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
+
+import main.java.com.sfudatabase.controller.FunctionController;
+import main.java.com.sfudatabase.controller.ImagePanelController;
+import main.java.com.sfudatabase.controller.PanelController;
+import main.java.com.sfudatabase.model.AddFriendPanel;
+import main.java.com.sfudatabase.model.AddReviewPanel;
+import main.java.com.sfudatabase.model.BusSearchPanel;
+import main.java.com.sfudatabase.model.ImagePanel;
+import main.java.com.sfudatabase.model.LoginPanel;
+import main.java.com.sfudatabase.model.UserSearchPanel;
 
 public class Main {
 
     private static Connection con;
-	private static String space = "                                           ";
 
     public static void main(String[] args) {
-
-        // Database connection
-        PreparedStatement pstmt = null;
-		ResultSet rs;
-		String sSQL= "select * from helpdesk";	//the table was created by helpdesk
-		String temp="";
 		
 		String sUsername = "s_sgw6";
 		String sPassphrase = "N4he46gMmHAga223";
 		
-        //String connectionUrl = "jdbc:sqlserver://cypress.csil.sfu.ca;" + "user = " + sUsername + ";" + "password =" + sPassphrase;
 		String connectionUrl = "jdbc:sqlserver://cypress.csil.sfu.ca;";	
 		
-		/*
-		try {
-			Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-		} catch(ClassNotFoundException ce) {
-			System.out.println("\n\nNo JDBC Driver for SQL Server; exit now.\n\n");
-			return;
-		}
-		*/
 		
 		try {
-			//con = DriverManager.getConnection(connectionUrl);
-			con = DriverManager.getConnection(connectionUrl, sUsername, sPassphrase); // this doesn't work either
-			System.out.println("\n\nConnection established\n\n");
+			con = DriverManager.getConnection(connectionUrl, sUsername, sPassphrase);
 		} catch(SQLException se) {
-			System.out.println ( "\n\nFailed to connect to CSIL SQL Server; exit now.\n\n" );
+			String errorMessage = "Error: Failed to connect to the yelp database..";
+            JOptionPane.showMessageDialog(null, errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
 				return;
 		}
-		
-		/* Test statement to see if connection worked
-		try {
-			pstmt = con.prepareStatement(sSQL);
-			rs = pstmt.executeQuery();
-			
-			System.out.println("\nThe table 'helpdesk' contains:\n\n");
-			
-			while (rs.next()) {
-				temp= rs.getString("username");	//the table has a field 'username'
-				System.out.println(temp);
-			}
-			rs.close();
-			System.out.println("\nSuccessfully connected to CSIL SQL Server!\n\n");
-		} catch(SQLException se) {
-			System.out.println("\nSQL Exception occurred, the state : "+ se.getSQLState()+"\nMessage:\n"+se.getMessage()+"\n");
-			return;
-		}
-		*/
-
+	
 		// UI
         SwingUtilities.invokeLater(() -> {
             JFrame mainFrame = new JFrame("Yelp Database Application");
@@ -81,6 +54,7 @@ public class Main {
 			FunctionController functionController = new FunctionController(panelController, con);
 			AddReviewPanel addReviewPanel = new AddReviewPanel("src/main/resources/img/logo-background.png", functionController, panelController);
             ImagePanelController imagePanelController = new ImagePanelController(panelController, addReviewPanel.getUserIDTextField());
+			panelController.setAddReviewPanel(addReviewPanel);
 
 			// Create UI Panels
             ImagePanel imagePanel = new ImagePanel("src/main/resources/img/logo-background.png", imagePanelController);
@@ -88,6 +62,7 @@ public class Main {
 			BusSearchPanel busSearchPanel = new BusSearchPanel("src/main/resources/img/logo-background.png", functionController, panelController);
 			UserSearchPanel userSearchPanel = new UserSearchPanel("src/main/resources/img/logo-background.png", functionController, panelController);
 			AddFriendPanel addFriendPanel = new AddFriendPanel("src/main/resources/img/logo-background.png", functionController, panelController);
+			panelController.setAddFriendPanel(addFriendPanel);
 
 			panelController.add(imagePanel, "imagePanel");
 			panelController.add(loginPanel, "loginPanel");

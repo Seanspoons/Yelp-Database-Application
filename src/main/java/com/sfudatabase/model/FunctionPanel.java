@@ -11,15 +11,19 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.border.LineBorder;
 
+import main.java.com.sfudatabase.controller.FunctionController;
 import main.java.com.sfudatabase.controller.PanelController;
 
 public class FunctionPanel extends JPanel {
 
     RoundedPanel functionPanel;
-    PanelController panelController;
+    private PanelController panelController;
+    FunctionController functionController;
+    JButton menuButton;
 
-    public FunctionPanel(PanelController panelController) {
+    public FunctionPanel(PanelController panelController, FunctionController functionController) {
         this.panelController = panelController;
+        this.functionController = functionController;
 
         // Add vertical glue above
         this.setLayout(new GridBagLayout());
@@ -42,8 +46,8 @@ public class FunctionPanel extends JPanel {
         this.add(functionPanel, gbc);
 
         // Add Menu button
-        JButton menuButton = new JButton("Menu");
-        menuButton.addActionListener(e -> panelController.showPanel("imagePanel"));
+        menuButton = new JButton("Menu");
+        menuButton.addActionListener(e -> checkCurrentPanel());
         menuButton.setBackground(Color.BLACK);
         menuButton.setForeground(Color.WHITE);
         menuButton.setPreferredSize(new Dimension(75, 25));
@@ -60,6 +64,17 @@ public class FunctionPanel extends JPanel {
         gbc.weighty = 1.0;
         this.add(Box.createVerticalGlue(), gbc);
 
+    }
+
+    public void checkCurrentPanel() {
+        if(panelController.getCurrentPanelName() == "busSearchResultsPanel") {
+            functionController.busResultList.clear();
+            functionController.busResultIndex = 0;
+        } else if(panelController.getCurrentPanelName() == "userSearchResultsPanel") {
+            functionController.userResultList.clear();
+            functionController.userResultIndex = 0;
+        }
+        panelController.showPanel("imagePanel");
     }
     
 }

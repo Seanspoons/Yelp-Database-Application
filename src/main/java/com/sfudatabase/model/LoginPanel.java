@@ -8,6 +8,7 @@ import java.awt.Insets;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+
 import javax.imageio.ImageIO;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -21,10 +22,10 @@ public class LoginPanel extends FunctionPanel {
 
     FunctionController functionController;
     PanelController panelController;
-    BufferedImage img;
+    private BufferedImage img;
 
     public LoginPanel(String imgPath, FunctionController functionController, PanelController panelController) {
-        super(panelController);
+        super(panelController, functionController);
         this.functionController = functionController;
         this.panelController = panelController;
         importBackground(imgPath);

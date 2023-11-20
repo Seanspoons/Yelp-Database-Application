@@ -2,10 +2,10 @@ package main.java.com.sfudatabase.controller;
 
 import javax.swing.JTextField;
 
-public class ImagePanelController { // Just controls the UI
+public class ImagePanelController {
 
-    PanelController panelController;
-    JTextField userIDTextField;
+    private PanelController panelController;
+    private JTextField userIDTextField;
 
     public ImagePanelController(PanelController panelController, JTextField userIDTextField) {
         this.panelController = panelController;
@@ -13,13 +13,7 @@ public class ImagePanelController { // Just controls the UI
     }
 
     public void handleLoginClick() {
-
-        if(FunctionController.loggedIn) { // First check if logged in
-            // If logged in - tell user they are already logged in
-        } else {
-            // Else not logged in - open login ui
-            panelController.showPanel("loginPanel");
-        }
+        panelController.showPanel("loginPanel");
     }
 
     public void handleBusinessSearchClick() {
@@ -37,6 +31,6 @@ public class ImagePanelController { // Just controls the UI
     public void handleAddReviewClick() {
         userIDTextField.setText(FunctionController.userID);
         userIDTextField.setEnabled(false);
-        panelController.showPanel("addReviewPanel"); 
+        panelController.showPanelReview("addReviewPanel", false); 
     }
 }

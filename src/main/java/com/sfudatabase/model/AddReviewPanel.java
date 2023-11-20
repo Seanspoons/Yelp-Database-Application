@@ -13,8 +13,8 @@ import java.util.ArrayList;
 import javax.imageio.ImageIO;
 import javax.swing.Box;
 import javax.swing.JButton;
-import javax.swing.JCheckBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
 
@@ -23,23 +23,27 @@ import main.java.com.sfudatabase.controller.PanelController;
 
 public class AddReviewPanel extends FunctionPanel {
 
-    FunctionController functionController;
-    PanelController panelController;
-    BufferedImage img;
-    JTextField userIDTextField;
+    private FunctionController functionController;
+    private PanelController panelController;
+    private BufferedImage img;
+    private JTextField userIDTextField;
+    private JTextField busIDTextField;
+    private JTextField starsTextField;
+    private Boolean wasSearching;
 
     public AddReviewPanel(String imgPath, FunctionController functionController, PanelController panelController) {
-        super(panelController);
+        super(panelController, functionController);
         this.functionController = functionController;
         this.panelController = panelController;
+        wasSearching = false;
         importBackground(imgPath);
 
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(5, 5, 5, 5);
 
         userIDTextField = new JTextField(15);
-        JTextField busIDTextField = new JTextField(15);
-        JTextField starsTextField = new JTextField(15);
+        busIDTextField = new JTextField(15);
+        starsTextField = new JTextField(15);
 
         ArrayList<JTextField> inputsArray = new ArrayList<>();
         inputsArray.add(userIDTextField);
@@ -59,7 +63,7 @@ public class AddReviewPanel extends FunctionPanel {
 
         // Button
         JButton addReviewButton = new JButton("Add Review");
-        addReviewButton.addActionListener(e -> functionController.handleAddReview(inputsArray));
+        addReviewButton.addActionListener(e -> checkEntryValidity(inputsArray, wasSearching)); // Send this to a validator that checks if stars is a double then send to handleAddReview
         addReviewButton.setBackground(Color.BLACK);
         addReviewButton.setForeground(Color.WHITE);
         addReviewButton.setPreferredSize(new Dimension(75, 25));
@@ -70,6 +74,17 @@ public class AddReviewPanel extends FunctionPanel {
         gbc.insets = new Insets(10, 10, 10, 10);
         gbc.anchor = GridBagConstraints.CENTER;
         functionPanel.add(addReviewButton, gbc);
+
+        menuButton.removeActionListener(e -> panelController.showPanel("imagePanel"));
+        menuButton.addActionListener(e -> goToMenu());
+    }
+
+    private void goToMenu() {
+        busIDTextField.setText("");
+        busIDTextField.setEnabled(true);
+        starsTextField.setText("");
+
+        panelController.showPanel("imagePanel");
     }
 
     private void addRow(RoundedPanel panel, GridBagConstraints gbc, String label, JTextField textField) {
@@ -85,8 +100,50 @@ public class AddReviewPanel extends FunctionPanel {
         panel.add(textField, gbc);
     }
 
+    private void checkEntryValidity(ArrayList<JTextField> inputsArray, Boolean wasSearching) {
+        if(inputsArray.get(0).getText().isEmpty() || inputsArray.get(1).getText().isEmpty() || inputsArray.get(2).getText().isEmpty()) {
+            String errorMessage = "Error: Cannot leave any fields empty. Finish filling in the review before submitting.";
+            JOptionPane.showMessageDialog(null, errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
+        } else {
+            if(isDouble(inputsArray.get(2).getText())) {
+                if(Double.parseDouble(inputsArray.get(2).getText()) < 1.00 || Double.parseDouble(inputsArray.get(2).getText()) > 5.00) {
+                    String errorMessage = "Error: Invalid star entry. Please enter a decimal between 1 - 5 (eg. 2.5).";
+                    JOptionPane.showMessageDialog(null, errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
+                } else {
+                    functionController.handleAddReview(inputsArray, wasSearching);
+                }
+            } else {
+                String errorMessage = "Error: Invalid star entry. Please enter a decimal between 1 - 5 (eg. 2.5).";
+                JOptionPane.showMessageDialog(null, errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }
+
     public JTextField getUserIDTextField() {
         return userIDTextField;
+    }
+
+    public void setWasSearching(Boolean bool) {
+        wasSearching = true;
+    }
+
+    public void setUserIDTextField(String userID) {
+        userIDTextField.setText(userID);
+        userIDTextField.setEnabled(false);
+    }
+
+    public void setBusIDTextField(String busID) {
+        busIDTextField.setText(busID);
+        busIDTextField.setEnabled(false);
+    }
+
+    private boolean isDouble(String str) {
+        try {
+            Double.parseDouble(str);
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
     }
 
     private void importBackground(String imgPath) {

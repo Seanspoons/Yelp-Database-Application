@@ -12,6 +12,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicReference;
+
 import javax.imageio.ImageIO;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -28,12 +29,18 @@ import main.java.com.sfudatabase.controller.PanelController;
 
 public class BusSearchPanel extends FunctionPanel {
 
-    FunctionController functionController;
-    PanelController panelController;
-    BufferedImage img;
+    private FunctionController functionController;
+    private PanelController panelController;
+    private BufferedImage img;
+    private JTextField busNameTextField;
+    private JTextField busCityTextField;
+    private JTextField minStarsTextField;
+    private JCheckBox busNameCheckBox;
+    private JCheckBox busCityCheckBox;
+    private JCheckBox minStarsCheckBox;
 
     public BusSearchPanel(String imgPath, FunctionController functionController, PanelController panelController) {
-        super(panelController);
+        super(panelController, functionController);
         this.functionController = functionController;
         this.panelController = panelController;
         importBackground(imgPath);
@@ -41,13 +48,13 @@ public class BusSearchPanel extends FunctionPanel {
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(5, 5, 5, 5);
 
-        JTextField busNameTextField = new JTextField(15);
-        JTextField busCityTextField = new JTextField(15);
-        JTextField minStarsTextField = new JTextField(15);
+        busNameTextField = new JTextField(15);
+        busCityTextField = new JTextField(15);
+        minStarsTextField = new JTextField(15);
 
-        JCheckBox busNameCheckBox = new JCheckBox();
-        JCheckBox busCityCheckBox = new JCheckBox();
-        JCheckBox minStarsCheckBox = new JCheckBox();
+        busNameCheckBox = new JCheckBox();
+        busCityCheckBox = new JCheckBox();
+        minStarsCheckBox = new JCheckBox();
 
         busNameCheckBox.addChangeListener(new ChangeListener() {
             public void stateChanged(ChangeEvent e) {
@@ -124,6 +131,21 @@ public class BusSearchPanel extends FunctionPanel {
         gbc.gridwidth = 3;
         gbc.anchor = GridBagConstraints.CENTER;
         functionPanel.add(searchButton, gbc);
+
+        menuButton.removeActionListener(e -> panelController.showPanel("busSearchPanel"));
+        menuButton.addActionListener(e -> goToMenu());
+    }
+
+    private void goToMenu() {
+        busNameTextField.setText("");
+        busCityTextField.setText("");
+        minStarsTextField.setText("");
+
+        busNameCheckBox.setSelected(true);
+        busCityCheckBox.setSelected(true);
+        minStarsCheckBox.setSelected(true);
+
+        panelController.showPanel("imagePanel");
     }
 
     private void addRow(RoundedPanel panel, GridBagConstraints gbc, String label, JTextField textField, JCheckBox checkBox) {
