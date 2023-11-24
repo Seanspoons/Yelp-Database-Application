@@ -1,8 +1,0 @@
-{
-    "java.project.referencedLibraries": [
-        "lib/**/*.jar",
-        "c:\\Users\\seanj\\Documents\\sqljdbc_12.4\\enu\\jars\\mssql-jdbc-12.4.2.jre8-sources.jar",
-        "c:\\Users\\seanj\\Documents\\sqljdbc_12.4\\enu\\jars\\mssql-jdbc-12.4.2.jre11-sources.jar",
-        "c:\\Program Files\\Java\\sqljdbc_8.2\\enu\\mssql-jdbc-8.2.2.jre8.jar"
-    ]
-}

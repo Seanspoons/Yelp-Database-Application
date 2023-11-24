@@ -1,0 +1,83 @@
+Assignment 7 Yelp Database Application
+
+This application is used to connect to Sean Wotherspoon's (301456691) yelp database in the SFU Cypress 
+server. It provides a clear user interface to interact with the database. Steps to use the application
+are laid out in the usage section below.
+
+------------------------------
+
+Table of Contents:
+
+1. Setup
+2. Usage
+
+------------------------------
+
+1. Setup
+
+	To begin using this application, click on assignment.jar and the application will open.
+
+------------------------------
+
+2. Usage
+
+	2.1 Login
+	
+		To login press on "Options" to see the options of this hierarchical menu. You are then prompted
+		with a text box where you need to input a valid user id from the yelp database. Once a valid id
+		is added press "Login". If the id is invalid the application will let the user know.
+		
+	2.2 Business Search
+	
+		To search for a business, ensure you are logged in and then this option will become available.
+		Once you are logged in press on the hierarchical menu and then select "Business Search". You will
+		then be brought to a page where you have the option to search by business name, city, and stars.
+		Moreover, you can order the search results by name, city or stars. There is an option to turn off
+		specific search boxes by pressing the check box associated with row you desire to turn off. Once
+		the search parameters are entered "Search" is pressed you will be brought to the results page.
+		
+	2.2.1 Business Search Results
+	
+		Once the search is complete you are brought to the business search results interface. For each
+		business in the results you can see the business id, name, address, city, and stars. You have
+		the option to press "back" to go back to the business search page. Furthermore, to scroll through
+		the results you use the "<" left arrow and the ">" right arrow buttons. For each business in
+		the results you also have the option to review them by pressing "Add Review". Pressing "Add
+		Review" from the business search auto-fills the desired business id and the users id and leaves
+		the user to enter the stars for the business.
+		
+	2.3 User Search
+	
+		To search for a user, ensure you are logged in and then this option will become available.
+		Once you are logged in press on the hierarchical menu and then select "User Search". You will
+		then be brought to a page where you have the option to search by user name, review count, and
+		average stars. Notably, the search results are ordered by alphabetically by name. There is an
+		option to turn off specific search boxes by pressing the check box associated with row you
+		desire to turn off. Once the search parameters are entered "Search" is pressed you will be 
+		brought to the results page.
+		
+	2.3.1 User Search Results
+	
+		Once the search is complete you are brought to the user search results interface. For each
+		user in the results you can see their user id, name, review count, useful, funny, cool, average
+		stars, and sign-up date. You have the option to press "back" to go back to the user search page.
+		Furthermore, to scroll through the results you use the "<" left arrow and the ">" right arrow
+		buttons. For each user in the results you also have the option to add them as a friend by
+		pressing "Add Friend". Pressing "Add Friend" from the user search auto-fills the desired
+		friend's id, leaving just the confirmation for the user to do.
+	
+	2.4 Add a Friend
+	
+		To add a friend, ensure you are logged in and then this option will become available.
+		Once you are logged in, press on the hierarchical menu and select the "Add a Friend" option.
+		You will then be brought to the add a friend page where you will be prompted to enter a valid
+		user id of someone you would like to become friends with. If you input an invalid id the program
+		will tell you.
+		
+	2.5 Review a Business
+	
+		To add a review, ensure you are logged in and then this option will become available.
+		Once you are logged in, press on the hierarchical menu and select the "Add a Review" option.
+		You will then be brought to the add a review page where you will be prompted to enter a valid
+		business id, and stars value. If you input an invalid value for either of these inputs, the
+		application will tell you.
